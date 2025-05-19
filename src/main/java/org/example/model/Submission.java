@@ -16,7 +16,9 @@ public class Submission {
     @JsonIgnore
     private Quiz quiz;
 
-    private String student;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
     private LocalDateTime submittedAt;
     private Map<Long, Integer> answers;
     private int score;
@@ -25,9 +27,9 @@ public class Submission {
     public Submission() {
     }
 
-    public Submission(Quiz quiz, String student, LocalDateTime submittedAt, Map<Long, Integer> answers, int score, boolean graded) {
+    public Submission(Quiz quiz, User user, LocalDateTime submittedAt, Map<Long, Integer> answers, int score, boolean graded) {
         this.quiz = quiz;
-        this.student = student;
+        this.user = user;
         this.submittedAt = submittedAt;
         this.answers = answers;
         this.score = score;
@@ -42,8 +44,8 @@ public class Submission {
         return quiz;
     }
 
-    public String getStudent() {
-        return student;
+    public User getUser() {
+        return user;
     }
 
     public LocalDateTime getSubmittedAt() {
@@ -66,8 +68,8 @@ public class Submission {
         this.quiz = quiz;
     }
 
-    public void setStudent(String student) {
-        this.student = student;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void setSubmittedAt(LocalDateTime submittedAt) {
