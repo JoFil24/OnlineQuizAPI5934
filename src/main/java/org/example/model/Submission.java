@@ -64,6 +64,10 @@ public class Submission {
         return graded;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public void setQuiz(Quiz quiz) {
         this.quiz = quiz;
     }

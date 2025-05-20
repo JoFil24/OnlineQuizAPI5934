@@ -12,7 +12,5 @@ public interface SubmissionRepository extends JpaRepository<Submission, Long> {
     Optional<Submission> findByUsername(String name);
     Optional<Submission> findByUserId(Long userId);
     Optional<List<Submission>> findByQuizId(Long quizId);
-    List<Submission> fetchLeaderboard(Long quizId);
-    Optional<Submission> generateReport(Long userId);
     int getPointsForUser(Long userId, Long quizId);
 }

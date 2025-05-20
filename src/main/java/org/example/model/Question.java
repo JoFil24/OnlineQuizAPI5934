@@ -49,6 +49,10 @@ public class Question {
         return correctChoiceIndex;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public void setQuiz(Quiz quiz) {
         this.quiz = quiz;
     }
