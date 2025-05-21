@@ -22,7 +22,6 @@ public class Submission {
     private LocalDateTime submittedAt;
     private Map<Long, Integer> answers;
     private int score;
-    private boolean graded;
 
     public Submission() {
     }
@@ -33,7 +32,6 @@ public class Submission {
         this.submittedAt = submittedAt;
         this.answers = answers;
         this.score = score;
-        this.graded = graded;
     }
 
     public Long getId() {
@@ -60,10 +58,6 @@ public class Submission {
         return score;
     }
 
-    public boolean isGraded() {
-        return graded;
-    }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -86,9 +80,5 @@ public class Submission {
 
     public void setScore(int score) {
         this.score = score;
-    }
-
-    public void setGraded(boolean graded) {
-        this.graded = graded;
     }
 }

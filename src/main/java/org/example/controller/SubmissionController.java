@@ -1,6 +1,8 @@
 package org.example.controller;
 
+import org.example.model.Quiz;
 import org.example.model.Submission;
+import org.example.model.User;
 import org.example.service.SubmissionService;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,6 +44,9 @@ public class SubmissionController {
 
     @PostMapping
     public Submission createSubmission(@RequestBody Submission submission) {
+        User user = submission.getUser();
+        user.addSubmission(submission);
+
         return submissionService.saveSubmission(submission);
     }
 

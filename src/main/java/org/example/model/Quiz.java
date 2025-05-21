@@ -18,6 +18,10 @@ public class Quiz {
     @JsonIgnore
     private List<Question> questions = new ArrayList<>();
 
+    @OneToMany(mappedBy = "quiz", orphanRemoval = true, cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Submission> submissions = new ArrayList<>();
+
     public Quiz() {
     }
 
@@ -40,6 +44,10 @@ public class Quiz {
 
     public List<Question> getQuestions() {
         return questions;
+    }
+
+    public List<Submission> getSubmissions() {
+        return submissions;
     }
 
     public void setId(Long id) {

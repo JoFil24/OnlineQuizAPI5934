@@ -3,6 +3,7 @@ package org.example.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class User {
@@ -14,14 +15,13 @@ public class User {
 
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Submission> submissions;
+    private final List<Submission> submissions = new ArrayList<>();
 
     public User() {
     }
 
-    public User(String name, List<Submission> submissions) {
+    public User(String name) {
         this.name = name;
-        this.submissions = submissions;
     }
 
     public Long getId() {
@@ -44,7 +44,7 @@ public class User {
         this.name = name;
     }
 
-    public void setSubmissions(List<Submission> submissions) {
-        this.submissions = submissions;
+    public void addSubmission(Submission submission) {
+        this.submissions.add(submission);
     }
 }
