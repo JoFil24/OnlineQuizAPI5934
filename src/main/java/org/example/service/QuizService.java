@@ -1,6 +1,8 @@
 package org.example.service;
 
+import org.example.model.Question;
 import org.example.model.Quiz;
+import org.example.repository.QuestionRepository;
 import org.example.repository.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,21 +14,41 @@ public class QuizService {
     @Autowired
     private QuizRepository quizRepository;
 
+    @Autowired
+    private QuestionRepository questionRepository;
+
     public Quiz getQuizByTitle(String title) {
         return quizRepository.findByTitle(title);
     }
-    public Quiz getQuizByUser (Long userId) {
+
+    public Quiz getQuizByUser(Long userId) {
         return quizRepository.findByUser(userId);
     }
+
+    public Quiz addQuestionToQuiz(Long quizId, Long questionId){
+        Quiz quiz = quizRepository.findById(quizId).orElseThrow(() -> new RuntimeException("Quiz not found"));
+
+        Question question = questionRepository.findById(questionId).orElseThrow(() -> new RuntimeException("Question not found"));
+
+        question.setQuiz(quiz);
+        quiz.getQuestions().add(question);
+
+        questionRepository.save(question);
+        return quizRepository.save(quiz);
+    }
+
     public Quiz saveQuiz(Quiz quiz) {
         return quizRepository.save(quiz);
     }
+
     public void deleteQuiz(Long quizId) {
         quizRepository.deleteById(quizId);
     }
+
     public List<Quiz> getAllQuizzes() {
         return quizRepository.findAll();
     }
+
     public Quiz getQuizById(Long quizId) {
         return quizRepository.findById(quizId).orElseThrow(() -> new RuntimeException("Couldn't find quiz"));
     }

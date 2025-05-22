@@ -26,7 +26,7 @@ public class Submission {
     public Submission() {
     }
 
-    public Submission(Quiz quiz, User user, LocalDateTime submittedAt, Map<Long, Integer> answers, int score, boolean graded) {
+    public Submission(Quiz quiz, User user, LocalDateTime submittedAt, Map<Long, Integer> answers, int score) {
         this.quiz = quiz;
         this.user = user;
         this.submittedAt = submittedAt;

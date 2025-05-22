@@ -1,16 +1,24 @@
 package org.example.service;
 
+import org.example.model.Quiz;
+import org.example.model.Submission;
 import org.example.model.User;
+import org.example.repository.QuizRepository;
 import org.example.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
+    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private QuizRepository quizRepository;
 
     @Autowired
     public UserService(UserRepository userRepository) {
@@ -19,6 +27,14 @@ public class UserService {
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public User findByName(String name){
+        return userRepository.findByName(name);
+    }
+
+    public User findByCourseId(Long courseId){
+        return userRepository.findByCourseId(courseId);
     }
 
     public User getUserById(Long userId) {

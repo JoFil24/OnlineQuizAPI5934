@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface SubmissionRepository extends JpaRepository<Submission, Long> {
     Optional<Submission> findByUsername(String name);
-    Optional<Submission> findByUserId(Long userId);
+    Optional<List<Submission>> findByUserId(Long userId);
     Optional<List<Submission>> findByQuizId(Long quizId);
-    int getPointsForUser(Long userId, Long quizId);
+    Optional<Submission> findByUserIdAndQuizId(Long userId, Long quizId);
 }

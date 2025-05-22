@@ -1,12 +1,12 @@
 package org.example.controller;
 
-import org.example.model.Quiz;
 import org.example.model.Submission;
 import org.example.model.User;
 import org.example.service.SubmissionService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/submissions")
@@ -14,7 +14,7 @@ public class SubmissionController {
     private SubmissionService submissionService;
 
     @GetMapping("/user/{userId}")
-    public Submission getSubmissionByUserId(@PathVariable Long userId) {
+    public List<Submission> getSubmissionByUserId(@PathVariable Long userId) {
         return submissionService.getSubmissionByUserId(userId);
     }
     @GetMapping("/quiz/{quizId}")
@@ -33,13 +33,13 @@ public class SubmissionController {
     }
 
     @GetMapping("/quiz/{quizId}/user/{userId}")
-    public int getPointsFromUser(@PathVariable Long quizId, @PathVariable Long userId){
-        return submissionService.getPointsForUser(userId, quizId);
+    public Submission getSubmissionForUser(@PathVariable Long quizId, @PathVariable Long userId){
+        return submissionService.getSubmissionForUser(userId, quizId);
     }
 
-    @GetMapping("/report/{userId}")
-    public Submission generateReport(@PathVariable Long userId) {
-        return submissionService.generateReport(userId);
+    @GetMapping("/report/{userId}/course/{courseId}")
+    public List<Submission> generateReport(@PathVariable Long userId, @PathVariable Long courseId) {
+        return submissionService.generateReport(userId, courseId);
     }
 
     @PostMapping
@@ -48,6 +48,11 @@ public class SubmissionController {
         user.addSubmission(submission);
 
         return submissionService.saveSubmission(submission);
+    }
+
+    @PostMapping("/submit/user/{userId}/quiz/{quizId}")
+    public Submission submit(@PathVariable Long userId, @PathVariable Long quizId, @RequestBody Map<Long, Integer> answers){
+        return submissionService.submit(userId, quizId, answers);
     }
 
     @GetMapping

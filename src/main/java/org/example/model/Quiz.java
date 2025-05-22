@@ -20,14 +20,20 @@ public class Quiz {
 
     @OneToMany(mappedBy = "quiz", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Submission> submissions = new ArrayList<>();
+    private final List<Submission> submissions = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    @JsonIgnore
+    private Course course;
 
     public Quiz() {
     }
 
-    public Quiz(String title, Integer timeLimitSeconds) {
+    public Quiz(String title, Integer timeLimitSeconds, Course course) {
         this.title = title;
         this.timeLimitSeconds = timeLimitSeconds;
+        this.course = course;
     }
 
     public Long getId() {
@@ -50,6 +56,10 @@ public class Quiz {
         return submissions;
     }
 
+    public Course getCourse() {
+        return course;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -64,5 +74,9 @@ public class Quiz {
 
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 }

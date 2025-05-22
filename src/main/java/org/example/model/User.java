@@ -17,11 +17,16 @@ public class User {
     @JsonIgnore
     private final List<Submission> submissions = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "user")
+    @JsonIgnore
+    private Course course;
+
     public User() {
     }
 
-    public User(String name) {
+    public User(String name, Course course) {
         this.name = name;
+        this.course = course;
     }
 
     public Long getId() {

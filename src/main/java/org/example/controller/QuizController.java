@@ -1,6 +1,8 @@
 package org.example.controller;
 
+import org.example.model.Question;
 import org.example.model.Quiz;
+import org.example.service.QuestionService;
 import org.example.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,9 @@ import java.util.List;
 public class QuizController {
     @Autowired
     private QuizService quizService;
+
+    @Autowired
+    private QuestionService questionService;
 
     @GetMapping
     public List<Quiz> getAllQuizzes() {
@@ -42,6 +47,11 @@ public class QuizController {
     public Quiz updateQuiz(@PathVariable Long id, @RequestBody Quiz quiz) {
         quiz.setId(id);
         return quizService.saveQuiz(quiz);
+    }
+
+    @PutMapping("/{id}/add-question/{questionId}")
+    public Quiz addQuestionToQuiz(@PathVariable Long id, @PathVariable Long questionId){
+        return quizService.addQuestionToQuiz(id, questionId);
     }
 
     @DeleteMapping("/{id}")
