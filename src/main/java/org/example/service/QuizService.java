@@ -52,4 +52,10 @@ public class QuizService {
     public Quiz getQuizById(Long quizId) {
         return quizRepository.findById(quizId).orElseThrow(() -> new RuntimeException("Couldn't find quiz"));
     }
+
+    public void removeQuestionFromQuiz(Long id, Long questionId){
+        Question question = questionRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldnt find question"));
+        question.getQuiz().getQuestions().remove(question);
+        quizRepository.save(question.getQuiz());
+    }
 }

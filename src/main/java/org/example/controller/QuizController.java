@@ -58,4 +58,9 @@ public class QuizController {
     public void deleteQuiz(@PathVariable Long id) {
         quizService.deleteQuiz(id);
     }
+
+    @PutMapping("/{id}/remove-question/{questionId}")
+    public void removeQuestionFromQuiz(@PathVariable Long id, @PathVariable Long questionId){
+        quizService.removeQuestionFromQuiz(id, questionId);
+    }
 }

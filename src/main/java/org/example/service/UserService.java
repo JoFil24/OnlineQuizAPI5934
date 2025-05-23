@@ -1,7 +1,5 @@
 package org.example.service;
 
-import org.example.model.Quiz;
-import org.example.model.Submission;
 import org.example.model.User;
 import org.example.repository.QuizRepository;
 import org.example.repository.UserRepository;

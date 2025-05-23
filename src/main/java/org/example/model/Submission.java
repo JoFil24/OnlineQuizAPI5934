@@ -3,6 +3,7 @@ package org.example.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -26,10 +27,10 @@ public class Submission {
     public Submission() {
     }
 
-    public Submission(Quiz quiz, User user, LocalDateTime submittedAt, Map<Long, Integer> answers, int score) {
+    public Submission(Quiz quiz, User user, Map<Long, Integer> answers, int score) {
         this.quiz = quiz;
         this.user = user;
-        this.submittedAt = submittedAt;
+        this.submittedAt = LocalDateTime.now();
         this.answers = answers;
         this.score = score;
     }

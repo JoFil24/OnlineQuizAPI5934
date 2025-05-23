@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Quiz {
     @Id
@@ -78,5 +80,18 @@ public class Quiz {
 
     public void setCourse(Course course) {
         this.course = course;
+    }
+
+    public int calculateScore(Map<Long, Integer> answers){
+        int score = 0;
+
+        for(Question question: questions){
+            Integer selectedChoice = answers.get(question.getId());
+            if(selectedChoice != null && selectedChoice == question.getCorrectChoiceIndex()){
+                score++;
+            }
+        }
+
+        return score;
     }
 }

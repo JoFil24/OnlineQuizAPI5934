@@ -19,14 +19,13 @@ public class User {
 
     @ManyToMany(mappedBy = "user")
     @JsonIgnore
-    private Course course;
+    private List<Course> courses = new ArrayList<>();
 
     public User() {
     }
 
-    public User(String name, Course course) {
+    public User(String name) {
         this.name = name;
-        this.course = course;
     }
 
     public Long getId() {
@@ -41,6 +40,10 @@ public class User {
         return submissions;
     }
 
+    public List<Course> getCourse() {
+        return courses;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -51,5 +54,9 @@ public class User {
 
     public void addSubmission(Submission submission) {
         this.submissions.add(submission);
+    }
+
+    public void setCourse(List<Course> courses) {
+        this.courses = courses;
     }
 }

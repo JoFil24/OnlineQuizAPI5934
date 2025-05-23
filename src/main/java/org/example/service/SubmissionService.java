@@ -73,27 +73,27 @@ public class SubmissionService {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Couldn't find user"));
         Quiz quiz = quizRepository.findById(quizId).orElseThrow(() -> new RuntimeException("Couldn't find user"));
 
-        int score = 0;
+        int score = quiz.calculateScore(answers);
 
-        List<Question> questions = quiz.getQuestions();
+        //List<Question> questions = quiz.getQuestions();
 
-        for(Map.Entry<Long, Integer> answer: answers.entrySet()){
+        //for(Map.Entry<Long, Integer> answer: answers.entrySet()){
             //It might be weird seeing this as the only comment
-            //But this needs explaining
+            //But this needs an explanation
             //First it checks whether the key (Id of question) is present
             //if yes then the value of the map entry(integer which is the choice)
             //is equivalent to the correct choice
             //we get the correct choice by performing get()
             // to convert from optional to question
             //When it is question, then we get the correct choice index
-            if(questionRepository.findById(answer.getKey()).isPresent()){
-                if(answer.getValue().equals(questionRepository.findById(answer.getKey()).get().getCorrectChoiceIndex())){
-                    score += 1;
-                }
-            }
-        }
+            //if(questionRepository.findById(answer.getKey()).isPresent()){
+            //    if(answer.getValue().equals(questionRepository.findById(answer.getKey()).get().getCorrectChoiceIndex())){
+            //        score += 1;
+            //    }
+           // }
+        //}
 
-        Submission submission = new Submission(quiz, user, LocalDateTime.now(), answers, score);
+        Submission submission = new Submission(quiz, user, answers, score);
 
         user.getSubmissions().add(submission);
         quiz.getSubmissions().add(submission);

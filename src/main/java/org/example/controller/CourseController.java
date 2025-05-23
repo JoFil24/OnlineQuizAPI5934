@@ -38,6 +38,16 @@ public class CourseController {
         return courseService.findByTitle(title);
     }
 
+    @PutMapping("/{id}/add-quiz/{quizId}")
+    public Course addQuizToCourse(@PathVariable Long id, @PathVariable Long quizId){
+        return courseService.addQuizToCourse(id, quizId);
+    }
+
+    @PutMapping("/{id}/add-user/{userId}")
+    public Course addUserToCourse(@PathVariable Long id, @PathVariable Long userId){
+        return courseService.addUserToCourse(id, userId);
+    }
+
     @PutMapping("{id}")
     public Course updateCourse(@PathVariable Long id, @RequestBody Course course){
         course.setId(id);
@@ -47,5 +57,15 @@ public class CourseController {
     @DeleteMapping("/{id}")
     public void deleteCourse(@PathVariable  Long id){
         courseService.deleteCourse(id);
+    }
+
+    @PutMapping("/{id}/remove-quiz/{quizId}")
+    public void deleteQuizFromCourse(@PathVariable Long id, @PathVariable Long quizId){
+        courseService.deleteQuizFromCourse(id, quizId);
+    }
+
+    @PutMapping("/{id}/remove-user/{userId}")
+    public void deleteUserFromCourse(@PathVariable Long id, @PathVariable Long userId){
+        courseService.removeUserFromCourse(id, userId);
     }
 }
