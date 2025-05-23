@@ -1,15 +1,10 @@
 package org.example.service;
 
-import org.example.model.Question;
-import org.example.model.Quiz;
-import org.example.model.Submission;
-import org.example.model.User;
+import org.example.model.*;
 import org.example.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -21,7 +16,7 @@ public class SubmissionService {
     private CourseRepository courseRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private StudentRepository studentRepository;
 
     @Autowired
     private QuizRepository quizRepository;
@@ -29,12 +24,8 @@ public class SubmissionService {
     @Autowired
     private QuestionRepository questionRepository;
 
-    public Submission getSubmissionByUsername(String username) {
-        return submissionRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Could not find username"));
-    }
-
-    public List<Submission> getSubmissionByUserId(Long userId) {
-        return submissionRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("Could not find user"));
+    public List<Submission> getSubmissionByStudentId(Long studentId) {
+        return submissionRepository.findByStudentId(studentId).orElseThrow(() -> new RuntimeException("Could not find student"));
     }
 
     public List<Submission> getSubmissionsByQuizId(Long quizId) {
@@ -55,23 +46,23 @@ public class SubmissionService {
         }
     }
 
-    public List<Submission> generateReport(Long userId, Long courseId) {
-            List<Long> quizIds = courseRepository.findByCourseIdWithIdsOnly(courseId).orElseThrow(() -> new RuntimeException("Could not find submissions"));
+    public List<Submission> generateReport(Long studentId, Long courseId) {
+            List<Quiz> quizzes = quizRepository.findByCourseId(courseId).orElseThrow(() -> new RuntimeException("Could not find submissions"));
 
             List<Submission> report = new ArrayList<>();
 
-            for(Long quizId: quizIds){
-                if(submissionRepository.findByUserIdAndQuizId(userId, quizId).orElse(null) != null){
-                    report.add(submissionRepository.findByUserIdAndQuizId(userId, quizId).orElse(null));
+            for(Quiz quiz: quizzes){
+                if(submissionRepository.findByStudentIdAndQuizId(studentId, quiz.getId()).orElse(null) != null){
+                    report.add(submissionRepository.findByStudentIdAndQuizId(studentId, quiz.getId()).orElse(null));
                 }
             }
 
             return report;
     }
 
-    public Submission submit(Long userId, Long quizId, Map<Long, Integer> answers){
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Couldn't find user"));
-        Quiz quiz = quizRepository.findById(quizId).orElseThrow(() -> new RuntimeException("Couldn't find user"));
+    public Submission submit(Long studentId, Long quizId, List<Answer> answers){
+        Student student = studentRepository.findById(studentId).orElseThrow(() -> new RuntimeException("Couldn't find student"));
+        Quiz quiz = quizRepository.findById(quizId).orElseThrow(() -> new RuntimeException("Couldn't find quiz"));
 
         int score = quiz.calculateScore(answers);
 
@@ -93,15 +84,17 @@ public class SubmissionService {
            // }
         //}
 
-        Submission submission = new Submission(quiz, user, answers, score);
+        Submission submission = new Submission(quiz, student);
+        submission.setAnswers(answers);
+        submission.setScore(quiz.calculateScore(answers));
 
-        user.getSubmissions().add(submission);
+        student.getSubmissions().add(submission);
         quiz.getSubmissions().add(submission);
         return submission;
     }
 
-    public Submission getSubmissionForUser(Long userId, Long quizId) {
-        return submissionRepository.findByUserIdAndQuizId(userId, quizId).orElseThrow(() -> new RuntimeException("Couldnt find submission"));
+    public Submission getSubmissionForStudent(Long studentId, Long quizId) {
+        return submissionRepository.findByStudentIdAndQuizId(studentId, quizId).orElseThrow(() -> new RuntimeException("Couldnt find submission"));
     }
 
     public Submission saveSubmission(Submission submission) {

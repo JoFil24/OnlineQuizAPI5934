@@ -23,32 +23,17 @@ public class CourseController {
         return courseService.getCourseById(id);
     }
 
-    @GetMapping("/user/{userId}")
-    public List<Course> findByUserId(@PathVariable Long userId){
-        return courseService.findByUserId(userId);
-    }
-
-    @GetMapping("/quiz/{quizId}")
-    public Course findByQuizId(@PathVariable Long quizId){
-        return courseService.findByQuizId(quizId);
-    }
-
-    @GetMapping("/title/{title}")
-    public Course findByTitle(@PathVariable String title){
-        return courseService.findByTitle(title);
-    }
-
     @PutMapping("/{id}/add-quiz/{quizId}")
     public Course addQuizToCourse(@PathVariable Long id, @PathVariable Long quizId){
         return courseService.addQuizToCourse(id, quizId);
     }
 
-    @PutMapping("/{id}/add-user/{userId}")
-    public Course addUserToCourse(@PathVariable Long id, @PathVariable Long userId){
-        return courseService.addUserToCourse(id, userId);
+    @PutMapping("/{id}/add-student/{studentId}")
+    public Course addStudentToCourse(@PathVariable Long id, @PathVariable Long studentId){
+        return courseService.addStudentToCourse(id, studentId);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public Course updateCourse(@PathVariable Long id, @RequestBody Course course){
         course.setId(id);
         return courseService.saveCourse(course);
@@ -64,8 +49,8 @@ public class CourseController {
         courseService.deleteQuizFromCourse(id, quizId);
     }
 
-    @PutMapping("/{id}/remove-user/{userId}")
-    public void deleteUserFromCourse(@PathVariable Long id, @PathVariable Long userId){
-        courseService.removeUserFromCourse(id, userId);
+    @PutMapping("/{id}/remove-student/{studentId}")
+    public void deleteStudentFromCourse(@PathVariable Long id, @PathVariable Long studentId){
+        courseService.removeStudentFromCourse(id, studentId);
     }
 }

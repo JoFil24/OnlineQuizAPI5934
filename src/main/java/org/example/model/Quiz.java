@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Entity
 public class Quiz {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -82,13 +83,15 @@ public class Quiz {
         this.course = course;
     }
 
-    public int calculateScore(Map<Long, Integer> answers){
+    public int calculateScore(List<Answer> answers){
         int score = 0;
 
-        for(Question question: questions){
-            Integer selectedChoice = answers.get(question.getId());
-            if(selectedChoice != null && selectedChoice == question.getCorrectChoiceIndex()){
-                score++;
+        for (Question question : questions) {
+            for (Answer answer : answers) {
+                if (answer.getQuestion().getId().equals(question.getId())
+                        && answer.getSelectedChoiceIndex() == question.getCorrectChoiceIndex()) {
+                    score++;
+                }
             }
         }
 

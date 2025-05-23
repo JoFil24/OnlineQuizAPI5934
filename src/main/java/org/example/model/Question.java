@@ -3,8 +3,10 @@ package org.example.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +20,10 @@ public class Question {
     private String text;
     private List<String> choices;
     private int correctChoiceIndex;
+
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Answer> answers = new ArrayList<>();
 
     public Question() {
     }

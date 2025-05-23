@@ -3,7 +3,7 @@ package org.example.service;
 import org.example.model.*;
 import org.example.repository.CourseRepository;
 import org.example.repository.QuizRepository;
-import org.example.repository.UserRepository;
+import org.example.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ public class CourseService {
     private QuizRepository quizRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private StudentRepository studentRepository;
 
     public Course getCourseById(Long id) {
         return courseRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldnt find course"));
@@ -26,18 +26,6 @@ public class CourseService {
 
     public List<Course> getAllCourses() {
         return courseRepository.findAll();
-    }
-
-    public Course findByTitle(String title){
-        return courseRepository.findByTitle(title).orElseThrow(() -> new RuntimeException("Couldnt find course"));
-    }
-
-    public Course findByQuizId(Long quizId){
-        return courseRepository.findByQuizId(quizId).orElseThrow(() -> new RuntimeException("Couldnt find course"));
-    }
-
-    public List<Course> findByUserId(Long userId){
-        return courseRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("Couldnt find course"));
     }
 
     public Course addQuizToCourse(Long courseId, Long quizId){
@@ -52,14 +40,14 @@ public class CourseService {
         return courseRepository.save(course);
     }
 
-    public Course addUserToCourse(Long courseId, Long userId){
+    public Course addStudentToCourse(Long courseId, Long studentId){
         Course course = courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
-        User user = userRepository.findById(courseId).orElseThrow(() -> new RuntimeException("User not found"));
+        Student student = studentRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Student not found"));
 
-        course.getUsers().add(user);
-        user.getCourse().add(course);
+        course.getStudents().add(student);
+        student.getCourse().add(course);
 
-        userRepository.save(user);
+        studentRepository.save(student);
         return courseRepository.save(course);
     }
 
@@ -71,15 +59,15 @@ public class CourseService {
         courseRepository.deleteById(id);
     }
 
-    public void removeUserFromCourse(Long id, Long userId){
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+    public void removeStudentFromCourse(Long id, Long studentId){
+        Student student = studentRepository.findById(studentId).orElseThrow(() -> new RuntimeException("Student not found"));
         Course course = courseRepository.findById(id).orElseThrow(() -> new RuntimeException("Course not found"));
 
-        course.getUsers().remove(user);
+        course.getStudents().remove(student);
         courseRepository.save(course);
 
-        user.getCourse().remove(course);
-        userRepository.save(user);
+        student.getCourse().remove(course);
+        studentRepository.save(student);
     }
 
     public void deleteQuizFromCourse(Long id, Long quizId){

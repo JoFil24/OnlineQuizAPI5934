@@ -3,10 +3,11 @@ package org.example.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
+@Entity
 public class Submission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,21 +19,24 @@ public class Submission {
     private Quiz quiz;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "student_id")
+    @JsonIgnore
+    private Student student;
     private LocalDateTime submittedAt;
-    private Map<Long, Integer> answers;
+
+    @OneToMany(mappedBy = "submission", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Answer> answers = new ArrayList<>();
+
     private int score;
 
     public Submission() {
     }
 
-    public Submission(Quiz quiz, User user, Map<Long, Integer> answers, int score) {
+    public Submission(Quiz quiz, Student student) {
         this.quiz = quiz;
-        this.user = user;
+        this.student = student;
         this.submittedAt = LocalDateTime.now();
-        this.answers = answers;
-        this.score = score;
     }
 
     public Long getId() {
@@ -43,15 +47,15 @@ public class Submission {
         return quiz;
     }
 
-    public User getUser() {
-        return user;
+    public Student getStudent() {
+        return student;
     }
 
     public LocalDateTime getSubmittedAt() {
         return submittedAt;
     }
 
-    public Map<Long, Integer> getAnswers() {
+    public List<Answer> getAnswers() {
         return answers;
     }
 
@@ -67,15 +71,15 @@ public class Submission {
         this.quiz = quiz;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setStudent(Student student) {
+        this.student = student;
     }
 
     public void setSubmittedAt(LocalDateTime submittedAt) {
         this.submittedAt = submittedAt;
     }
 
-    public void setAnswers(Map<Long, Integer> answers) {
+    public void setAnswers(List<Answer> answers) {
         this.answers = answers;
     }
 

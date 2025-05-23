@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.List;
 
 @Configuration
 public class DataInitializer {
@@ -16,24 +16,25 @@ public class DataInitializer {
             QuestionRepository questionRepository,
             QuizRepository quizRepository,
             SubmissionRepository submissionRepository,
-            UserRepository userRepository,
-            CourseRepository courseRepository) {
+            StudentRepository studentRepository,
+            CourseRepository courseRepository,
+            AnswerRepository answerRepository) {
         return args -> {
-            User u1 = new User("John");
-            User u2 = new User("James");
-            User u3 = new User("Katerina");
-            userRepository.saveAll(Arrays.asList(u1, u2, u3));
+            Student u1 = new Student("John");
+            Student u2 = new Student("James");
+            Student u3 = new Student("Katerina");
+            studentRepository.saveAll(Arrays.asList(u1, u2, u3));
 
             Course c1 = new Course("Mathematics");
             Course c2 = new Course("Physics");
             Course c3 = new Course("Chemistry");
             courseRepository.saveAll(Arrays.asList(c1, c2, c3));
 
-            associateUserWithCourse(u1, c1);
-            associateUserWithCourse(u1, c2);
-            associateUserWithCourse(u2, c1);
-            associateUserWithCourse(u2, c3);
-            associateUserWithCourse(u3, c2);
+            associateStudentWithCourse(u1, c1);
+            associateStudentWithCourse(u1, c2);
+            associateStudentWithCourse(u2, c1);
+            associateStudentWithCourse(u2, c3);
+            associateStudentWithCourse(u3, c2);
 
             Quiz q1 = new Quiz("Math Mid-term", 3600, c1);
             Quiz q2 = new Quiz("Chemistry Lesson 5 Quiz", 420, c3);
@@ -59,49 +60,75 @@ public class DataInitializer {
             Question qu15 = new Question(q5, "What is the third most common gas found in the air we breathe?", Arrays.asList("Oxygen", "Nitrogen", "Argon"), 3);
             questionRepository.saveAll(Arrays.asList(qu1, qu2, qu3, qu4, qu5, qu6, qu7, qu8, qu9, qu10, qu11, qu12, qu13, qu14, qu15));
 
-            //answers
-            HashMap<Long, Integer> a1 = new HashMap<>();
-            a1.put(q1.getId(), 1);
-            a1.put(q1.getId(), 1);
-            a1.put(q1.getId(), 1);
+            List<Answer> a1 = Arrays.asList(
+                    new Answer(qu1, 1),
+                    new Answer(qu2, 1),
+                    new Answer(qu3, 1)
+            );
 
-            HashMap<Long, Integer> a2 = new HashMap<>();
-            a1.put(q1.getId(), 1);
-            a1.put(q1.getId(), 2);
-            a1.put(q1.getId(), 3);
+            List<Answer> a2 = Arrays.asList(
+                    new Answer(qu1, 1),
+                    new Answer(qu2, 2),
+                    new Answer(qu3, 3)
+            );
 
-            HashMap<Long, Integer> a3 = new HashMap<>();
-            a1.put(q1.getId(), 1);
-            a1.put(q1.getId(), 2);
-            a1.put(q1.getId(), 1);
+            List<Answer> a3 = Arrays.asList(
+                    new Answer(qu4, 1),
+                    new Answer(qu5, 2),
+                    new Answer(qu6, 1)
+            );
 
-            HashMap<Long, Integer> a4 = new HashMap<>();
-            a1.put(q1.getId(), 1);
-            a1.put(q1.getId(), 1);
-            a1.put(q1.getId(), 3);
+            List<Answer> a4 = Arrays.asList(
+                    new Answer(qu7, 1),
+                    new Answer(qu8, 1),
+                    new Answer(qu9, 3)
+            );
 
-            HashMap<Long, Integer> a5 = new HashMap<>();
-            a1.put(q1.getId(), 1);
-            a1.put(q1.getId(), 2);
-            a1.put(q1.getId(), 3);
+            List<Answer> a5 = Arrays.asList(
+                    new Answer(qu7, 1),
+                    new Answer(qu8, 2),
+                    new Answer(qu9, 3)
+            );
 
-            HashMap<Long, Integer> a6 = new HashMap<>();
-            a1.put(q1.getId(), 1);
-            a1.put(q1.getId(), 2);
-            a1.put(q1.getId(), 3);
+            List<Answer> a6 = Arrays.asList(
+                    new Answer(qu10, 1),
+                    new Answer(qu11, 2),
+                    new Answer(qu12, 3)
+            );
+            answerRepository.saveAll(a1);
+            answerRepository.saveAll(a2);
+            answerRepository.saveAll(a3);
+            answerRepository.saveAll(a4);
+            answerRepository.saveAll(a5);
+            answerRepository.saveAll(a6);
 
-            Submission s1 = new Submission(q1, u1, a1, q1.calculateScore(a1)); //q1 - c1: u1&u2
-            Submission s2 = new Submission(q1, u2, a2, q1.calculateScore(a2));
-            Submission s3 = new Submission(q2, u2, a1, q1.calculateScore(a1)); //q2 - c3: u2
-            Submission s4 = new Submission(q3, u1, a3, q1.calculateScore(a1)); //q3 - c2: u1 & u3
-            Submission s5 = new Submission(q3, u3, a4, q1.calculateScore(a1));
-            Submission s6 = new Submission(q4, u1, a1, q1.calculateScore(a1)); //q4 - c1: u1&u2
+            Submission s1 = new Submission(q1, u1); //q1 - c1: u1&u2
+            Submission s2 = new Submission(q1, u2);
+            Submission s3 = new Submission(q2, u2); //q2 - c3: u2
+            Submission s4 = new Submission(q3, u1); //q3 - c2: u1 & u3
+            Submission s5 = new Submission(q3, u3);
+            Submission s6 = new Submission(q4, u1); //q4 - c1: u1&u2
             submissionRepository.saveAll(Arrays.asList(s1, s2, s3, s4, s5, s6));
+
+            associateAnswersSubmission(a1, s1);
+            associateAnswersSubmission(a2, s2);
+            associateAnswersSubmission(a3, s3);
+            associateAnswersSubmission(a4, s4);
+            associateAnswersSubmission(a5, s5);
+            associateAnswersSubmission(a6, s6);
         };
     }
 
-    private void associateUserWithCourse(User user, Course course) {
-        course.getUsers().add(user);
-        user.getCourse().add(course);
+    private void associateStudentWithCourse(Student student, Course course) {
+        course.getStudents().add(student);
+        student.getCourse().add(course);
+    }
+
+    private void associateAnswersSubmission(List<Answer> answers, Submission submission){
+        submission.setAnswers(answers);
+        submission.setScore(submission.getQuiz().calculateScore(answers));
+        for(Answer answer: answers){
+            answer.setSubmission(submission);
+        }
     }
 }

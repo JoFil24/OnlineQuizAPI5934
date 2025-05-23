@@ -28,16 +28,6 @@ public class QuizController {
         return quizService.getQuizById(id);
     }
 
-    @GetMapping("/title/{title}")
-    public Quiz getQuizByTitle(@PathVariable String title) {
-        return quizService.getQuizByTitle(title);
-    }
-
-    @GetMapping("/user/{userId}")
-    public Quiz getQuizByUser (@PathVariable Long userId) {
-        return quizService.getQuizByUser(userId);
-    }
-
     @PostMapping
     public Quiz createQuiz(@RequestBody Quiz quiz) {
         return quizService.saveQuiz(quiz);

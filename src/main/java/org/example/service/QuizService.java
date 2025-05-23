@@ -17,14 +17,6 @@ public class QuizService {
     @Autowired
     private QuestionRepository questionRepository;
 
-    public Quiz getQuizByTitle(String title) {
-        return quizRepository.findByTitle(title);
-    }
-
-    public Quiz getQuizByUser(Long userId) {
-        return quizRepository.findByUser(userId);
-    }
-
     public Quiz addQuestionToQuiz(Long quizId, Long questionId){
         Quiz quiz = quizRepository.findById(quizId).orElseThrow(() -> new RuntimeException("Quiz not found"));
 

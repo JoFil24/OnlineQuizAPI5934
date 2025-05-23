@@ -6,25 +6,32 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+@Entity
+public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
 
-    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "student", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonIgnore
     private final List<Submission> submissions = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "user")
+//    @ManyToMany(mappedBy = "student")
+    @ManyToMany
+    @JoinTable(
+        name = "student_course",
+        joinColumns = @JoinColumn(name = "student_id"),
+        inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
     @JsonIgnore
     private List<Course> courses = new ArrayList<>();
 
-    public User() {
+    public Student() {
     }
 
-    public User(String name) {
+    public Student(String name) {
         this.name = name;
     }
 

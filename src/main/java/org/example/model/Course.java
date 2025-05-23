@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,14 +14,15 @@ public class Course {
 
     private String title;
 
-    @ManyToMany
-    @JoinTable(
-            name = "course_user",
-            joinColumns = @JoinColumn(name = "course_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
+//    @ManyToMany
+//    @JoinTable(
+//            name = "course_user",
+//            joinColumns = @JoinColumn(name = "course_id"),
+//            inverseJoinColumns = @JoinColumn(name = "user_id")
+//    )
+    @ManyToMany(mappedBy = "courses")
     @JsonIgnore
-    private final List<User> users = new ArrayList<>();
+    private final List<Student> students = new ArrayList<>();
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
@@ -41,8 +43,8 @@ public class Course {
         return title;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public List<Student> getStudents() {
+        return students;
     }
 
     public List<Quiz> getQuizzes() {
