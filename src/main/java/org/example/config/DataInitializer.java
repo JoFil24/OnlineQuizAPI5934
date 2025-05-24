@@ -36,6 +36,9 @@ public class DataInitializer {
             associateStudentWithCourse(u2, c3);
             associateStudentWithCourse(u3, c2);
 
+            courseRepository.saveAll(Arrays.asList(c1, c2, c3));
+            studentRepository.saveAll(Arrays.asList(u1, u2, u3));
+
             Quiz q1 = new Quiz("Math Mid-term", 3600, c1);
             Quiz q2 = new Quiz("Chemistry Lesson 5 Quiz", 420, c3);
             Quiz q3 = new Quiz("Physics Make-Up Exam", 1337, c2);
@@ -116,17 +119,27 @@ public class DataInitializer {
             associateAnswersSubmission(a4, s4);
             associateAnswersSubmission(a5, s5);
             associateAnswersSubmission(a6, s6);
+
+            answerRepository.saveAll(a1);
+            answerRepository.saveAll(a2);
+            answerRepository.saveAll(a3);
+            answerRepository.saveAll(a4);
+            answerRepository.saveAll(a5);
+            answerRepository.saveAll(a6);
+            submissionRepository.saveAll(Arrays.asList(s1, s2, s3, s4, s5, s6));
+
+
         };
     }
 
     private void associateStudentWithCourse(Student student, Course course) {
-        course.getStudents().add(student);
         student.getCourse().add(course);
+        course.getStudents().add(student);
     }
 
     private void associateAnswersSubmission(List<Answer> answers, Submission submission){
         submission.setAnswers(answers);
-        submission.setScore(submission.getQuiz().calculateScore(answers));
+        //submission.setScore(submission.getQuiz().calculateScore(answers));
         for(Answer answer: answers){
             answer.setSubmission(submission);
         }

@@ -4,6 +4,7 @@ import org.example.model.Answer;
 import org.example.model.Submission;
 import org.example.model.Student;
 import org.example.service.SubmissionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,7 +12,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/submissions")
 public class SubmissionController {
+    @Autowired
     private SubmissionService submissionService;
+
+    public SubmissionController(SubmissionService submissionService){
+        this.submissionService = submissionService;
+    }
 
     @GetMapping("/student/{studentId}")
     public List<Submission> getSubmissionByStudentId(@PathVariable Long studentId) {
@@ -52,7 +58,8 @@ public class SubmissionController {
 
     @GetMapping
     public List<Submission> getAllSubmissions(){
-        return submissionService.getAllSubmissions();
+        List<Submission> submissions = submissionService.getAllSubmissions();
+        return submissions;
     }
 
     @GetMapping("/{id}")

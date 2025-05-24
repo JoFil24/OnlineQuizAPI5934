@@ -18,7 +18,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/questions/**")
                 .addPathPatterns("/quizzes/**")
                 .addPathPatterns("/submissions/**")
-                .addPathPatterns("/users/**")
+                .addPathPatterns("/students/**")
+                .addPathPatterns("/answers/**")
+                .addPathPatterns("/submissions/**")
 
 
                 .excludePathPatterns("/h2-console/**")

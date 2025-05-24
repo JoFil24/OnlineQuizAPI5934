@@ -7,7 +7,10 @@ import org.example.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class CourseService {
@@ -20,12 +23,29 @@ public class CourseService {
     @Autowired
     private StudentRepository studentRepository;
 
+    @Autowired
+    public CourseService(CourseRepository courseRepository){
+        this.courseRepository = courseRepository;
+    }
+
     public Course getCourseById(Long id) {
         return courseRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldnt find course"));
     }
 
     public List<Course> getAllCourses() {
         return courseRepository.findAll();
+    }
+
+    public List<Quiz> getQuizzesByCourse(Long courseId){
+        Optional<Course> opCourse = courseRepository.findById(courseId);
+
+        if(opCourse.isPresent()){
+            Course course = opCourse.get();
+            return course.getQuizzes();
+        }
+        else {
+            return new ArrayList<>();
+        }
     }
 
     public Course addQuizToCourse(Long courseId, Long quizId){

@@ -1,11 +1,16 @@
 package org.example.controller;
 
 import org.example.model.Course;
+import org.example.model.Quiz;
+import org.example.model.Student;
 import org.example.service.CourseService;
+import org.example.service.QuizService;
+import org.example.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/courses")
@@ -13,14 +18,32 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
+    @Autowired
+    private StudentService studentService;
+
+    @Autowired
+    private QuizService quizService;
+
     @GetMapping
     public List<Course> getAllCourses(){
-        return courseService.getAllCourses();
+        List<Course> courses = courseService.getAllCourses();
+        return courses;
     }
 
     @GetMapping("/{id}")
     public Course getCourseById(@PathVariable Long id){
         return courseService.getCourseById(id);
+    }
+
+    @GetMapping("/{id}/students")
+    public List<Student> getStudentsByCourse(@PathVariable Long id){
+        return studentService.getStudentsByCourse(id);
+    }
+
+    @GetMapping("/{id}/quizzes")
+    public List<Quiz> getQuizzesByCourse(@PathVariable Long id){
+        List<Quiz> quizzes = courseService.getQuizzesByCourse(id);
+        return quizzes;
     }
 
     @PutMapping("/{id}/add-quiz/{quizId}")
