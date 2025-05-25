@@ -28,16 +28,19 @@ public class SubmissionController {
         return submissionService.getSubmissionsByQuizId(quizId);
     }
 
+    //leaderboard for a quiz
     @GetMapping("/leaderboard/{quizId}")
     public List<Submission> fetchLeaderboard(@PathVariable Long quizId) {
         return submissionService.fetchLeaderboard(quizId);
     }
 
+    //get submission for a student in a quiz
     @GetMapping("/quiz/{quizId}/student/{studentId}")
     public Submission getSubmissionForStudent(@PathVariable Long quizId, @PathVariable Long studentId){
         return submissionService.getSubmissionForStudent(studentId, quizId);
     }
 
+    //generate report of all submissions of a student
     @GetMapping("/report/{studentId}/course/{courseId}")
     public List<Submission> generateReport(@PathVariable Long studentId, @PathVariable Long courseId) {
         return submissionService.generateReport(studentId, courseId);
@@ -51,6 +54,7 @@ public class SubmissionController {
         return submissionService.saveSubmission(submission);
     }
 
+    //submit the answers of a quiz
     @PostMapping("/submit/student/{studentId}/quiz/{quizId}")
     public Submission submit(@PathVariable Long studentId, @PathVariable Long quizId, @RequestBody List<Integer> answers){
         return submissionService.submit(studentId, quizId, answers);

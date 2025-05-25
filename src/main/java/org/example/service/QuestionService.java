@@ -26,7 +26,10 @@ public class QuestionService {
     }
 
     public Question saveQuestion(Question questionDetails){
-        if(!quizRepository.findById(questionDetails.getId()).isPresent()){
+        //if the questionId doesnt exist, then that means it came
+        //from the post method and it needs to be created
+        //else just change some attributes
+        if(questionDetails.getId() == null){
             Question question = new Question(questionDetails.getQuiz(), questionDetails.getText(), questionDetails.getChoices(), questionDetails.getCorrectChoiceIndex());
             return questionRepository.save(question);
         }

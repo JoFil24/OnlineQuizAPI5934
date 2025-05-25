@@ -76,4 +76,9 @@ public class CourseController {
     public void deleteStudentFromCourse(@PathVariable Long id, @PathVariable Long studentId){
         courseService.removeStudentFromCourse(id, studentId);
     }
+
+    @PostMapping
+    public Course createCourse(@RequestBody Course course){
+        return courseService.saveCourse(course);
+    }
 }

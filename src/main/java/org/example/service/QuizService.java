@@ -8,6 +8,7 @@ import org.example.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -39,21 +40,20 @@ public class QuizService {
         return quizRepository.save(quiz);
     }
 
-    public Quiz addSubmissionToQuiz(Long quizId, Long studentId, Submission submission){
-        Quiz quiz = quizRepository.findById(quizId).orElseThrow(() -> new RuntimeException("Quiz not found"));
-        Student student = studentRepository.findById(studentId).orElseThrow(() -> new RuntimeException("Quiz not found"));
+//    public Quiz addSubmissionToQuiz(Long quizId, Long studentId, Submission submission){
+//        Quiz quiz = quizRepository.findById(quizId).orElseThrow(() -> new RuntimeException("Quiz not found"));
+//        Student student = studentRepository.findById(studentId).orElseThrow(() -> new RuntimeException("Student not found"));
 
-        submission.setScore(quiz.calculateScore(submission.getAnswers()));
+//        submission.setScore(quiz.calculateScore(submission.getAnswers()));
+//        quiz.getSubmissions().add(submission);
+//        submission.setQuiz(quiz);
 
-        quiz.getSubmissions().add(submission);
-        submission.setQuiz(quiz);
-
-        submissionRepository.save(submission);
-        return quizRepository.save(quiz);
-    }
+//        submissionRepository.save(submission);
+//        return quizRepository.save(quiz);
+//    }
 
     public Quiz saveQuiz(Quiz quizDetails) {
-        if(!quizRepository.findById(quizDetails.getId()).isPresent()){
+        if(quizDetails.getId() == null){
             Quiz quiz = new Quiz(quizDetails.getTitle(), quizDetails.getTimeLimitSeconds(), quizDetails.getCourse());
             return quizRepository.save(quiz);
         }
@@ -73,8 +73,17 @@ public class QuizService {
     }
 
     public void removeQuestionFromQuiz(Long id, Long questionId){
-        Question question = questionRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldnt find question"));
+        Question question = questionRepository.findById(questionId).orElseThrow(() -> new RuntimeException("Couldnt find question"));
         question.getQuiz().getQuestions().remove(question);
         quizRepository.save(question.getQuiz());
+    }
+
+    public List<Question> getQuestionsForQuiz(Long quizId){
+        if(quizRepository.findById(quizId).isPresent()){
+            return quizRepository.findById(quizId).get().getQuestions();
+        }
+        else{
+            return new ArrayList<>();
+        }
     }
 }

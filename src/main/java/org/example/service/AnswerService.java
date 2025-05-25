@@ -38,6 +38,7 @@ public class AnswerService {
         answer.getSubmission().getAnswers().add(answer);
         answer.getQuestion().getAnswers().add(answer);
 
+        //save the answer to its related submission and question
         submissionRepository.save(answer.getSubmission());
         questionRepository.save(answer.getQuestion());
         return answerRepository.save(answer);

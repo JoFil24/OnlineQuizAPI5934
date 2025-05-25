@@ -39,6 +39,7 @@ public class CourseService {
     public List<Quiz> getQuizzesByCourse(Long courseId){
         Optional<Course> opCourse = courseRepository.findById(courseId);
 
+        //if the course is present, fetch the quizzes
         if(opCourse.isPresent()){
             Course course = opCourse.get();
             return course.getQuizzes();
@@ -51,6 +52,7 @@ public class CourseService {
     public Course addQuizToCourse(Long courseId, String title, int timeLimit){
         Course course = courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
 
+        //create a new quiz using the fetched course
         Quiz quiz = new Quiz(title, timeLimit, course);
 
         course.getQuizzes().add(quiz);

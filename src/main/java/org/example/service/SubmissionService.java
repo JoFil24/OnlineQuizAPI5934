@@ -63,12 +63,19 @@ public class SubmissionService {
             return report;
     }
 
+    //this is used to submit the answers of a quiz
+    //tempAnswers are a list of integers, which are the selected answers
     public Submission submit(Long studentId, Long quizId, List<Integer> tempAnswers){
         Student student = studentRepository.findById(studentId).orElseThrow(() -> new RuntimeException("Couldn't find student"));
         Quiz quiz = quizRepository.findById(quizId).orElseThrow(() -> new RuntimeException("Couldn't find quiz"));
         List<Question> questions = quiz.getQuestions();
-        List<Answer> answers = new ArrayList<>();
+        List<Answer> answers = new ArrayList<>(); //the real answers, answer objects
 
+        //each answer is matched with the question with a corresponding index
+        //the new answer object is stored in the newAnswer object temporarily
+        //so that not only can it be added to answers, but also
+        //in the answers list of the question object on the
+        //corresponding index
         if(questions.size() == tempAnswers.size()){
             for(int i = 0; i < questions.size(); i++){
                 Answer newAnswer = new Answer(questions.get(i), tempAnswers.get(i));
@@ -79,6 +86,7 @@ public class SubmissionService {
 
         answerRepository.saveAll(answers);
 
+        //used for calculating the score
         int score = quiz.calculateScore(answers);
 
         //List<Question> questions = quiz.getQuestions();
@@ -99,10 +107,13 @@ public class SubmissionService {
            // }
         //}
 
+        //submission is created out of this
         Submission submission = new Submission(quiz, student);
         submission.setAnswers(answers);
         submission.setScore(quiz.calculateScore(answers));
 
+        //stored in the submission list of the student
+        //as well as the submission list of the quiz
         student.getSubmissions().add(submission);
         quiz.getSubmissions().add(submission);
         return submissionRepository.save(submission);

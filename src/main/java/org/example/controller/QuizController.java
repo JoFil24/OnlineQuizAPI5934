@@ -58,4 +58,10 @@ public class QuizController {
     public void removeQuestionFromQuiz(@PathVariable Long id, @PathVariable Long questionId){
         quizService.removeQuestionFromQuiz(id, questionId);
     }
+
+    //listing all the questions in a quiz
+    @GetMapping("{quizId}/questions")
+    public List<Question> getQuestionsForQuiz(@PathVariable Long quizId){
+        return quizService.getQuestionsForQuiz(quizId);
+    }
 }

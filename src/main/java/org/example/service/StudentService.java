@@ -61,7 +61,14 @@ public class StudentService {
         });
     }
 
-    public void deleteStudent (Long studentId) {
-        studentRepository.deleteById(studentId);
+    public void deleteStudent(Long studentId) {
+        Student student = studentRepository.findById(studentId).orElseThrow(() -> new RuntimeException("Student not found"));
+
+        // Removing student from courses
+        for (Course course : student.getCourse()) {
+            course.getStudents().remove(student);
+        }
+
+        studentRepository.delete(student);
     }
 }

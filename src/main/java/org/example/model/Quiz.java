@@ -86,6 +86,11 @@ public class Quiz {
     public int calculateScore(List<Answer> answers){
         int score = 0;
 
+        //for each question, if the questionId stored in answer
+        //matches the id of the question object
+        //then its checked whether the choiceindex (chosen answer)
+        //is equivalent to the correctChoiceIndex (correct answer)
+        //if so, then the score goes up by one
         for (Question question : questions) {
             for (Answer answer : answers) {
                 if (answer.getQuestion().getId().equals(question.getId())
