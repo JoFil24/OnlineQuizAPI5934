@@ -36,15 +36,16 @@ public class DataInitializer {
             associateStudentWithCourse(u2, c3);
             associateStudentWithCourse(u3, c2);
 
-            courseRepository.saveAll(Arrays.asList(c1, c2, c3));
-            studentRepository.saveAll(Arrays.asList(u1, u2, u3));
-
             Quiz q1 = new Quiz("Math Mid-term", 3600, c1);
             Quiz q2 = new Quiz("Chemistry Lesson 5 Quiz", 420, c3);
             Quiz q3 = new Quiz("Physics Make-Up Exam", 1337, c2);
             Quiz q4 = new Quiz("Math Final", 3600, c1);
             Quiz q5 = new Quiz("Chemistry Trial", 600, c3);
             quizRepository.saveAll(Arrays.asList(q1, q2, q3, q4, q5));
+
+            c1.getQuizzes().addAll(Arrays.asList(q1, q4));
+            c2.getQuizzes().add(q3);
+            c3.getQuizzes().addAll(Arrays.asList(q2, q5));
 
             Question qu1 = new Question(q1, "Formula for area of square", Arrays.asList("a^2", "2a", "a/a"), 1);
             Question qu2 = new Question(q1, "Formula for hypotenuse of right-side triangle", Arrays.asList("a+b=c", "a*b=d", "a^2+b^2=c^2"), 3);
@@ -62,6 +63,12 @@ public class DataInitializer {
             Question qu14 = new Question(q5, "What is the chemical symbol for gold?", Arrays.asList("G", "Au", "Go"), 2);
             Question qu15 = new Question(q5, "What is the third most common gas found in the air we breathe?", Arrays.asList("Oxygen", "Nitrogen", "Argon"), 3);
             questionRepository.saveAll(Arrays.asList(qu1, qu2, qu3, qu4, qu5, qu6, qu7, qu8, qu9, qu10, qu11, qu12, qu13, qu14, qu15));
+
+            q1.getQuestions().addAll(Arrays.asList(qu1, qu2, qu3));
+            q2.getQuestions().addAll(Arrays.asList(qu4, qu5, qu6));
+            q3.getQuestions().addAll(Arrays.asList(qu7, qu8, qu9));
+            q4.getQuestions().addAll(Arrays.asList(qu10, qu11, qu12));
+            q5.getQuestions().addAll(Arrays.asList(qu13, qu14, qu15));
 
             List<Answer> a1 = Arrays.asList(
                     new Answer(qu1, 1),
@@ -105,6 +112,13 @@ public class DataInitializer {
             answerRepository.saveAll(a5);
             answerRepository.saveAll(a6);
 
+            associateQuestionsAnswers(q1.getQuestions(), a1);
+            associateQuestionsAnswers(q1.getQuestions(), a2);
+            associateQuestionsAnswers(q2.getQuestions(), a3);
+            associateQuestionsAnswers(q3.getQuestions(), a4);
+            associateQuestionsAnswers(q3.getQuestions(), a5);
+            associateQuestionsAnswers(q4.getQuestions(), a6);
+
             Submission s1 = new Submission(q1, u1); //q1 - c1: u1&u2
             Submission s2 = new Submission(q1, u2);
             Submission s3 = new Submission(q2, u2); //q2 - c3: u2
@@ -113,6 +127,10 @@ public class DataInitializer {
             Submission s6 = new Submission(q4, u1); //q4 - c1: u1&u2
             submissionRepository.saveAll(Arrays.asList(s1, s2, s3, s4, s5, s6));
 
+            u1.getSubmissions().addAll(Arrays.asList(s1, s4, s6));
+            u2.getSubmissions().addAll(Arrays.asList(s2, s3));
+            u3.getSubmissions().add(s5);
+
             associateAnswersSubmission(a1, s1);
             associateAnswersSubmission(a2, s2);
             associateAnswersSubmission(a3, s3);
@@ -120,6 +138,10 @@ public class DataInitializer {
             associateAnswersSubmission(a5, s5);
             associateAnswersSubmission(a6, s6);
 
+            studentRepository.saveAll(Arrays.asList(u1, u2, u3));
+            courseRepository.saveAll(Arrays.asList(c1, c2, c3));
+            quizRepository.saveAll(Arrays.asList(q1, q2, q3, q4, q5));
+            questionRepository.saveAll(Arrays.asList(qu1, qu2, qu3, qu4, qu5, qu6, qu7, qu8, qu9, qu10, qu11, qu12, qu13, qu14, qu15));
             answerRepository.saveAll(a1);
             answerRepository.saveAll(a2);
             answerRepository.saveAll(a3);
@@ -127,8 +149,6 @@ public class DataInitializer {
             answerRepository.saveAll(a5);
             answerRepository.saveAll(a6);
             submissionRepository.saveAll(Arrays.asList(s1, s2, s3, s4, s5, s6));
-
-
         };
     }
 
@@ -139,9 +159,18 @@ public class DataInitializer {
 
     private void associateAnswersSubmission(List<Answer> answers, Submission submission){
         submission.setAnswers(answers);
-        //submission.setScore(submission.getQuiz().calculateScore(answers));
+        submission.setScore(submission.getQuiz().calculateScore(answers));
         for(Answer answer: answers){
             answer.setSubmission(submission);
+        }
+    }
+
+    private void associateQuestionsAnswers(List<Question> questions, List<Answer> answers){
+        if(questions.size() == answers.size()){
+            for(int i = 0; i < questions.size(); i++){
+                questions.get(i).getAnswers().add(answers.get(i));
+                answers.get(i).setQuestion(questions.get(i));
+            }
         }
     }
 }

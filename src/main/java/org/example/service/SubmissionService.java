@@ -24,6 +24,9 @@ public class SubmissionService {
     @Autowired
     private QuestionRepository questionRepository;
 
+    @Autowired
+    private AnswerRepository answerRepository;
+
     public List<Submission> getSubmissionByStudentId(Long studentId) {
         return submissionRepository.findByStudentId(studentId).orElseThrow(() -> new RuntimeException("Could not find student"));
     }
@@ -60,9 +63,21 @@ public class SubmissionService {
             return report;
     }
 
-    public Submission submit(Long studentId, Long quizId, List<Answer> answers){
+    public Submission submit(Long studentId, Long quizId, List<Integer> tempAnswers){
         Student student = studentRepository.findById(studentId).orElseThrow(() -> new RuntimeException("Couldn't find student"));
         Quiz quiz = quizRepository.findById(quizId).orElseThrow(() -> new RuntimeException("Couldn't find quiz"));
+        List<Question> questions = quiz.getQuestions();
+        List<Answer> answers = new ArrayList<>();
+
+        if(questions.size() == tempAnswers.size()){
+            for(int i = 0; i < questions.size(); i++){
+                Answer newAnswer = new Answer(questions.get(i), tempAnswers.get(i));
+                answers.add(newAnswer);
+                questions.get(i).getAnswers().add(answers.get(i));
+            }
+        }
+
+        answerRepository.saveAll(answers);
 
         int score = quiz.calculateScore(answers);
 
@@ -90,7 +105,7 @@ public class SubmissionService {
 
         student.getSubmissions().add(submission);
         quiz.getSubmissions().add(submission);
-        return submission;
+        return submissionRepository.save(submission);
     }
 
     public Submission getSubmissionForStudent(Long studentId, Long quizId) {

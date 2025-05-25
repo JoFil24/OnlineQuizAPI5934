@@ -48,12 +48,11 @@ public class CourseService {
         }
     }
 
-    public Course addQuizToCourse(Long courseId, Long quizId){
+    public Course addQuizToCourse(Long courseId, String title, int timeLimit){
         Course course = courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
 
-        Quiz quiz = quizRepository.findById(quizId).orElseThrow(() -> new RuntimeException("Quiz not found"));
+        Quiz quiz = new Quiz(title, timeLimit, course);
 
-        quiz.setCourse(course);
         course.getQuizzes().add(quiz);
 
         quizRepository.save(quiz);
@@ -62,7 +61,7 @@ public class CourseService {
 
     public Course addStudentToCourse(Long courseId, Long studentId){
         Course course = courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
-        Student student = studentRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Student not found"));
+        Student student = studentRepository.findById(studentId).orElseThrow(() -> new RuntimeException("Student not found"));
 
         course.getStudents().add(student);
         student.getCourse().add(course);

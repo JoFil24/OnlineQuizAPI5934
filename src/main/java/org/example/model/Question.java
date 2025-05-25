@@ -51,6 +51,10 @@ public class Question {
         return choices;
     }
 
+    public List<Answer> getAnswers() {
+        return answers;
+    }
+
     public int getCorrectChoiceIndex() {
         return correctChoiceIndex;
     }
@@ -74,4 +78,6 @@ public class Question {
     public void setCorrectChoiceIndex(int correctChoiceIndex) {
         this.correctChoiceIndex = correctChoiceIndex;
     }
+
+
 }

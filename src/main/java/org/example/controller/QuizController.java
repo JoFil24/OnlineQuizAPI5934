@@ -2,6 +2,7 @@ package org.example.controller;
 
 import org.example.model.Question;
 import org.example.model.Quiz;
+import org.example.service.CourseService;
 import org.example.service.QuestionService;
 import org.example.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class QuizController {
     @Autowired
     private QuestionService questionService;
 
+    @Autowired
+    private CourseService courseService;
+
     @GetMapping
     public List<Quiz> getAllQuizzes() {
         return quizService.getAllQuizzes();
@@ -28,8 +32,9 @@ public class QuizController {
         return quizService.getQuizById(id);
     }
 
-    @PostMapping
-    public Quiz createQuiz(@RequestBody Quiz quiz) {
+    @PostMapping("/course/{courseId}")
+    public Quiz createQuiz(@RequestBody Quiz quiz, @PathVariable Long courseId) {
+        quiz.setCourse(courseService.getCourseById(courseId));
         return quizService.saveQuiz(quiz);
     }
 

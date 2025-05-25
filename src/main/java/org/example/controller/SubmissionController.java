@@ -52,7 +52,7 @@ public class SubmissionController {
     }
 
     @PostMapping("/submit/student/{studentId}/quiz/{quizId}")
-    public Submission submit(@PathVariable Long studentId, @PathVariable Long quizId, @RequestBody List<Answer> answers){
+    public Submission submit(@PathVariable Long studentId, @PathVariable Long quizId, @RequestBody List<Integer> answers){
         return submissionService.submit(studentId, quizId, answers);
     }
 

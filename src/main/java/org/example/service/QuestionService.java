@@ -1,6 +1,7 @@
 package org.example.service;
 
 import org.example.model.Question;
+import org.example.model.Quiz;
 import org.example.repository.QuestionRepository;
 import org.example.repository.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,12 @@ public class QuestionService {
         return questionRepository.findById(id).orElseThrow(() -> new RuntimeException("Question not found"));
     }
 
-    public Question saveQuestion(Question question){
-        return questionRepository.save(question);
+    public Question saveQuestion(Question questionDetails){
+        if(!quizRepository.findById(questionDetails.getId()).isPresent()){
+            Question question = new Question(questionDetails.getQuiz(), questionDetails.getText(), questionDetails.getChoices(), questionDetails.getCorrectChoiceIndex());
+            return questionRepository.save(question);
+        }
+        return questionRepository.save(questionDetails);
     }
 
     public void deleteQuestion(Long id){

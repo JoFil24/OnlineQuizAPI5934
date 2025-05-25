@@ -2,8 +2,9 @@ package org.example.service;
 
 import org.example.model.Question;
 import org.example.model.Quiz;
-import org.example.repository.QuestionRepository;
-import org.example.repository.QuizRepository;
+import org.example.model.Student;
+import org.example.model.Submission;
+import org.example.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,15 @@ public class QuizService {
     @Autowired
     private QuestionRepository questionRepository;
 
+    @Autowired
+    private SubmissionRepository submissionRepository;
+
+    @Autowired
+    private StudentRepository studentRepository;
+
+    @Autowired
+    private CourseRepository courseRepository;
+
     public Quiz addQuestionToQuiz(Long quizId, Long questionId){
         Quiz quiz = quizRepository.findById(quizId).orElseThrow(() -> new RuntimeException("Quiz not found"));
 
@@ -29,8 +39,25 @@ public class QuizService {
         return quizRepository.save(quiz);
     }
 
-    public Quiz saveQuiz(Quiz quiz) {
+    public Quiz addSubmissionToQuiz(Long quizId, Long studentId, Submission submission){
+        Quiz quiz = quizRepository.findById(quizId).orElseThrow(() -> new RuntimeException("Quiz not found"));
+        Student student = studentRepository.findById(studentId).orElseThrow(() -> new RuntimeException("Quiz not found"));
+
+        submission.setScore(quiz.calculateScore(submission.getAnswers()));
+
+        quiz.getSubmissions().add(submission);
+        submission.setQuiz(quiz);
+
+        submissionRepository.save(submission);
         return quizRepository.save(quiz);
+    }
+
+    public Quiz saveQuiz(Quiz quizDetails) {
+        if(!quizRepository.findById(quizDetails.getId()).isPresent()){
+            Quiz quiz = new Quiz(quizDetails.getTitle(), quizDetails.getTimeLimitSeconds(), quizDetails.getCourse());
+            return quizRepository.save(quiz);
+        }
+        return quizRepository.save(quizDetails);
     }
 
     public void deleteQuiz(Long quizId) {

@@ -46,9 +46,9 @@ public class CourseController {
         return quizzes;
     }
 
-    @PutMapping("/{id}/add-quiz/{quizId}")
-    public Course addQuizToCourse(@PathVariable Long id, @PathVariable Long quizId){
-        return courseService.addQuizToCourse(id, quizId);
+    @PutMapping("/{id}/add-quiz")
+    public Course addQuizToCourse(@PathVariable Long id, @RequestBody Quiz quiz){
+        return courseService.addQuizToCourse(id, quiz.getTitle(), quiz.getTimeLimitSeconds());
     }
 
     @PutMapping("/{id}/add-student/{studentId}")

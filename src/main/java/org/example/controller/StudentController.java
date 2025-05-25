@@ -16,6 +16,7 @@ public class StudentController {
 
     @GetMapping
     public List<Student> getAllStudents() {
+        //for testing purposes
         List<Student> students = studentService.getAllStudents();
         return students;
     }

@@ -2,6 +2,7 @@ package org.example.controller;
 
 import org.example.model.Question;
 import org.example.service.QuestionService;
+import org.example.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,9 @@ import java.util.List;
 public class QuestionController {
     @Autowired
     private QuestionService questionService;
+
+    @Autowired
+    private QuizService quizService;
 
     @GetMapping
     public List<Question> getAllQuestions() {
@@ -30,8 +34,9 @@ public class QuestionController {
         return questionService.getQuestionByQuizId(quizId);
     }
 
-    @PostMapping
-    public Question createQuestion(@RequestBody Question question) {
+    @PostMapping("/quiz/{quizId}")
+    public Question createQuestion(@PathVariable Long quizId, @RequestBody Question question) {
+        question.setQuiz(quizService.getQuizById(quizId));
         return questionService.saveQuestion(question);
     }
 
