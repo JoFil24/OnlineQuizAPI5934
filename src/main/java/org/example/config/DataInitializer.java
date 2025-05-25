@@ -47,21 +47,21 @@ public class DataInitializer {
             c2.getQuizzes().add(q3);
             c3.getQuizzes().addAll(Arrays.asList(q2, q5));
 
-            Question qu1 = new Question(q1, "Formula for area of square", Arrays.asList("a^2", "2a", "a/a"), 1);
-            Question qu2 = new Question(q1, "Formula for hypotenuse of right-side triangle", Arrays.asList("a+b=c", "a*b=d", "a^2+b^2=c^2"), 3);
-            Question qu3 = new Question(q1, "Natural numbers are:", Arrays.asList("Positive integers", "All integers", "positive numbers"), 1);
-            Question qu4 = new Question(q2, "What is the first element on the periodic table", Arrays.asList("Tungsten", "Hydrogen", "Gadolinum"), 2);
-            Question qu5 = new Question(q2, "True or false? Acids have a pH level below 7", Arrays.asList("True", "False"), 1);
-            Question qu6 = new Question(q2, "K is the chemical symbol for which element?    ", Arrays.asList("Calcium", "Nitrogen", "Potassium"), 3);
-            Question qu7 = new Question(q3, "Where does sound travel faster", Arrays.asList("Water", "Air"), 1);
-            Question qu8 = new Question(q3, "What is the opposite of matter", Arrays.asList("No matter", "Anti-matter", "None of the above"), 2);
-            Question qu9 = new Question(q3, "How many separate patents did Thomas Edison file", Arrays.asList("420", "1093", "69"), 2);
-            Question qu10 = new Question(q4, "5+3", Arrays.asList("8", "10", "9"), 1);
-            Question qu11 = new Question(q4, "What is the sum of 130+125+191", Arrays.asList("335", "456", "446", "426"), 3);
-            Question qu12 = new Question(q4, "2+24/8", Arrays.asList("5", "6", "7"), 1);
-            Question qu13 = new Question(q5, " At room temperature, what is the only metal that is in liquid form?", Arrays.asList("Gold", "Silver", "Mercury"), 3);
-            Question qu14 = new Question(q5, "What is the chemical symbol for gold?", Arrays.asList("G", "Au", "Go"), 2);
-            Question qu15 = new Question(q5, "What is the third most common gas found in the air we breathe?", Arrays.asList("Oxygen", "Nitrogen", "Argon"), 3);
+            Question qu1 = new Question(q1, "Formula for area of square", Arrays.asList("a^2", "2a", "a/a"), 0);
+            Question qu2 = new Question(q1, "Formula for hypotenuse of right-side triangle", Arrays.asList("a+b=c", "a*b=d", "a^2+b^2=c^2"), 2);
+            Question qu3 = new Question(q1, "Natural numbers are:", Arrays.asList("Positive integers", "All integers", "positive numbers"), 0);
+            Question qu4 = new Question(q2, "What is the first element on the periodic table", Arrays.asList("Tungsten", "Hydrogen", "Gadolinium"), 1);
+            Question qu5 = new Question(q2, "True or false? Acids have a pH level below 7", Arrays.asList("True", "False"), 0);
+            Question qu6 = new Question(q2, "K is the chemical symbol for which element?    ", Arrays.asList("Calcium", "Nitrogen", "Potassium"), 2);
+            Question qu7 = new Question(q3, "Where does sound travel faster", Arrays.asList("Water", "Air"), 0);
+            Question qu8 = new Question(q3, "What is the opposite of matter", Arrays.asList("No matter", "Anti-matter", "None of the above"), 1);
+            Question qu9 = new Question(q3, "How many separate patents did Thomas Edison file", Arrays.asList("420", "1093", "69"), 1);
+            Question qu10 = new Question(q4, "5+3", Arrays.asList("8", "10", "9"), 0);
+            Question qu11 = new Question(q4, "What is the sum of 130+125+191", Arrays.asList("335", "456", "446", "426"), 2);
+            Question qu12 = new Question(q4, "2+24/8", Arrays.asList("5", "6", "7"), 0);
+            Question qu13 = new Question(q5, " At room temperature, what is the only metal that is in liquid form?", Arrays.asList("Gold", "Silver", "Mercury"), 2);
+            Question qu14 = new Question(q5, "What is the chemical symbol for gold?", Arrays.asList("G", "Au", "Go"), 1);
+            Question qu15 = new Question(q5, "What is the third most common gas found in the air we breathe?", Arrays.asList("Oxygen", "Nitrogen", "Argon"), 2);
             questionRepository.saveAll(Arrays.asList(qu1, qu2, qu3, qu4, qu5, qu6, qu7, qu8, qu9, qu10, qu11, qu12, qu13, qu14, qu15));
 
             q1.getQuestions().addAll(Arrays.asList(qu1, qu2, qu3));
@@ -71,39 +71,39 @@ public class DataInitializer {
             q5.getQuestions().addAll(Arrays.asList(qu13, qu14, qu15));
 
             List<Answer> a1 = Arrays.asList(
-                    new Answer(qu1, 1),
-                    new Answer(qu2, 1),
-                    new Answer(qu3, 1)
+                    new Answer(qu1, 0),
+                    new Answer(qu2, 0),
+                    new Answer(qu3, 0)
             );
 
             List<Answer> a2 = Arrays.asList(
-                    new Answer(qu1, 1),
-                    new Answer(qu2, 2),
-                    new Answer(qu3, 3)
+                    new Answer(qu1, 0),
+                    new Answer(qu2, 1),
+                    new Answer(qu3, 2)
             );
 
             List<Answer> a3 = Arrays.asList(
-                    new Answer(qu4, 1),
-                    new Answer(qu5, 2),
-                    new Answer(qu6, 1)
+                    new Answer(qu4, 0),
+                    new Answer(qu5, 1),
+                    new Answer(qu6, 0)
             );
 
             List<Answer> a4 = Arrays.asList(
-                    new Answer(qu7, 1),
-                    new Answer(qu8, 1),
-                    new Answer(qu9, 3)
+                    new Answer(qu7, 0),
+                    new Answer(qu8, 0),
+                    new Answer(qu9, 2)
             );
 
             List<Answer> a5 = Arrays.asList(
-                    new Answer(qu7, 1),
-                    new Answer(qu8, 2),
-                    new Answer(qu9, 3)
+                    new Answer(qu7, 0),
+                    new Answer(qu8, 1),
+                    new Answer(qu9, 2)
             );
 
             List<Answer> a6 = Arrays.asList(
-                    new Answer(qu10, 1),
-                    new Answer(qu11, 2),
-                    new Answer(qu12, 3)
+                    new Answer(qu10, 0),
+                    new Answer(qu11, 1),
+                    new Answer(qu12, 2)
             );
             answerRepository.saveAll(a1);
             answerRepository.saveAll(a2);
